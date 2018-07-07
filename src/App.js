@@ -4,6 +4,7 @@ import ListBooks from './ListBooks'
 import './App.css'
 import {Route} from 'react-router-dom'
 import {Link} from 'react-router-dom';
+import Search from './search';
 class BooksApp extends React.Component {
   state = {
     wantToRead:[],
@@ -32,12 +33,13 @@ class BooksApp extends React.Component {
 
   changeShelf = (newShelf,old, bookId) => 
   {
-    console.log(newShelf,old);
     let book = this.state[old].filter( (book) => book.id === bookId );
     let rem = this.state[old].filter( (book) => book.id !== bookId );
-    book[0].shelf = newShelf;
+
+    BooksAPI.update(book[0],newShelf);
     if (old !== newShelf )
-    {this.setState({[old]:rem});BooksAPI.update(book[0],newShelf);}
+    {this.setState({[old]:rem});
+  }
     if (newShelf !== old && newShelf !=='none' )
     this.setState( (oldstate)=> (
       
@@ -48,6 +50,15 @@ class BooksApp extends React.Component {
     
 
   }
+  addToShelf = (newShelf,book) => 
+  {
+    //console.log(book);
+    BooksAPI.update(book,newShelf);
+   this.setState((oldstate)=>(
+    {[newShelf]: oldstate[newShelf].concat([book])}
+   )); 
+
+  }
  
   
     
@@ -55,23 +66,8 @@ class BooksApp extends React.Component {
   render() {
     return (
   <div className="app">
-      <Route path='/search' render={({his}) => 
-    
-          <div className="search-books">
-            <div className="search-books-bar">
-              <Link to='/' className="close-search"/>
-              <div className="search-books-input-wrapper">
-                {
-                  
-                }
-                <input type="text" placeholder="Search by title or author"/>
-
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
+      <Route path='/search' render={ () => 
+      <Search changeShelf={this.addToShelf} read={this.state.read} want={this.state.wantToRead} curr={this.state.currentlyReading} />
       } /> 
       
       

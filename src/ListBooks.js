@@ -18,7 +18,7 @@ render()
                 <ol className="books-grid">
                 { this.props.books.map( 
                     
-                (book) => {console.log(book); return <li key={book.id}> <Book book={book} shelf={this.props.type} changeShelf={this.changeShelf} /> </li> }
+                (book) => { return <li key={book.id}> <Book book={book} shelf={this.props.type} changeShelf={this.changeShelf} /> </li> }
                 
                 ) }
                 </ol>
