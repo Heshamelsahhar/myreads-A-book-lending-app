@@ -9,7 +9,7 @@
         books:[] , 
     }
     updateQuery = (ev) => {
-        this.setState({query : ev.target.value.trim()});
+        this.setState({query : ev.target.value});
         if (ev.target.value) {
              search(ev.target.value,20).then(booksearch => {
              booksearch.length >=1 ?  this.setState({books : booksearch}) : this.setState({books:[]});
